@@ -12,6 +12,7 @@
 
 import matplotlib.pyplot as plt
 import math
+import sys
 #------------
 def force(x):
 	f=-k*x
@@ -52,7 +53,7 @@ for i in range(N):
 		print("Force  :",f)
 		print(i)
 		plot_data()	
-		exit()
+		sys.exit()
 
 
 plot_data()
