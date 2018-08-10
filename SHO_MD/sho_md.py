@@ -14,6 +14,7 @@
 
 '''
 #----------------------------------------------------------------------------------#
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -35,16 +36,19 @@ def new_vel(v,dt,a,a_t):
 x,v,k,m,dt=1.0,1.0,1.0,1.0,0.001
 xpos,ypos,PE,KE,TE,t=[],[],[],[],[],[]
 #-------No Of MD steps
-N=int(input("Enter No. of Steps:"))
+#N=int(input("Enter No. of Steps:"))
+N=10000
 #-------Initial Force
 e,f=force(x)
 a=f/m
+#---------open file
+fp=open('COORDINATES.dat','w+')
+fp1=open('ENERGIES.dat','w+')
 #-------MD Cycle Starts
 for i in range(N):
 	PE.append(e)
 	TE.append(e+0.5*m*v**2)
 	KE.append(0.5*m*v**2)
-	t.append(i)
 	xpos.append(x)
 	ypos.append(v)
 	x=new_pos(x,v,dt,a)
@@ -52,10 +56,17 @@ for i in range(N):
 	e,f=force(x)
 	a=f/m
 	v=new_vel(v,dt,a,a_t)
+#	print i, x, v
+#fp.write("%i  %.5f  %.5f \n" % (i, x, v))
 #	print("New Pos:",x)
 #	print("New Vel:",v,'\n')
 #---Counting time steps
 	i+=1
+	t.append(i)
+#-------------------------------------
+# Writing Arrays to file (sho.log)
+np.savetxt(fp, zip(t, xpos, ypos), fmt="%i %5.2f %5.2f")
+np.savetxt(fp1, zip(t, PE, KE, TE), fmt="%i %5.2f %5.2f %5.2f")
 #-------------------------------------
 # Plotting Data All Graphs Together
 #------------------------------------
@@ -98,6 +109,8 @@ plt.plot(xpos,ypos,label="PHASE SPACE",lw=3)
 plt.savefig('Phase_Space.png')
 #plt.show()
 '''
+fp.close()
+fp1.close()
 #-----------------------------------------------------------#
 #          Written By ANJI BABU KAPAKAYALA		    #
 #-----------------------------------------------------------#
